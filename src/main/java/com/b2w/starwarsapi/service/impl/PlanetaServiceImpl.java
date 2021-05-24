@@ -1,6 +1,7 @@
 package com.b2w.starwarsapi.service.impl;
 
 import com.b2w.starwarsapi.domain.Planeta;
+import com.b2w.starwarsapi.exception.DuplicatedNameExcpetion;
 import com.b2w.starwarsapi.repository.PlanetaRepository;
 import com.b2w.starwarsapi.service.PlanetaService;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,9 @@ public class PlanetaServiceImpl implements PlanetaService {
 
     @Override
     public Planeta adicionar(Planeta planeta) {
+        if(planetaRepository.buscarPorNome(planeta.getNome()) != null) {
+            throw new DuplicatedNameExcpetion("Já existe um planeta com o nome de - " + planeta.getNome() + " - no Banco de Dados.");
+        }
         return planetaRepository.salvar(planeta);
     }
 

@@ -1,5 +1,6 @@
 package com.b2w.starwarsapi.endpoints.exceptions;
 
+import com.b2w.starwarsapi.exception.DuplicatedNameExcpetion;
 import com.b2w.starwarsapi.exception.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,17 @@ public class ResourceExceptionHandler {
                 e.getClass().getName());
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
+    }
+
+    @ExceptionHandler(DuplicatedNameExcpetion.class)
+    public ResponseEntity<StandardError> duplicatedNameException(DuplicatedNameExcpetion e){
+        StandardError err = new StandardError(
+                "O atributo deve ser único no Banco de Dados",
+                HttpStatus.BAD_REQUEST.value(),
+                e.getMessage(),
+                new Date().getTime(),
+                e.getClass().getName());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
     }
 
 
