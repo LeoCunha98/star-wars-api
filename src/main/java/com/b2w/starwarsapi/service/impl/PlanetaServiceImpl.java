@@ -5,6 +5,7 @@ import com.b2w.starwarsapi.exception.DuplicatedNameExcpetion;
 import com.b2w.starwarsapi.repository.PlanetaRepository;
 import com.b2w.starwarsapi.service.PlanetaService;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.ResourceAccessException;
 
 import java.util.List;
 
@@ -27,11 +28,21 @@ public class PlanetaServiceImpl implements PlanetaService {
 
     @Override
     public Planeta buscarPorId(String planetaId) {
-        return planetaRepository.buscarPorId(planetaId);
+        var planeta = planetaRepository.buscarPorId(planetaId);
+        if(planeta == null){
+            throw new ResourceAccessException("O planeta de id - " + planetaId + " - não foi encontrado!");
+        }
+        return planeta;
     }
 
     @Override
-    public Planeta buscarPorNome(String nome) { return planetaRepository.buscarPorNome(nome); }
+    public Planeta buscarPorNome(String nome) {
+        var planeta = planetaRepository.buscarPorNome(nome);
+        if(planeta == null){
+            throw new ResourceAccessException("O planeta - " + nome + " - não foi encontrado!");
+        }
+        return planeta;
+    }
 
     @Override
     public List<Planeta> buscarTodos() {

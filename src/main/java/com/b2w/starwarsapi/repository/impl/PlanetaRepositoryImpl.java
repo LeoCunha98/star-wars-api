@@ -36,11 +36,7 @@ public class PlanetaRepositoryImpl implements PlanetaRepository {
 
     @Override
     public Planeta buscarPorId(String planetaId) {
-        var planeta = dynamoDBMapper.load(Planeta.class, planetaId);
-        if(planeta == null) {
-            throw new ResourceAccessException("O planeta de id - " + planetaId + " não foi encontrado!");
-        }
-        return planeta;
+        return dynamoDBMapper.load(Planeta.class, planetaId);
     }
 
     @Override
@@ -51,7 +47,7 @@ public class PlanetaRepositoryImpl implements PlanetaRepository {
                 .withFilterExpression("nome = :nomeVal").withExpressionAttributeValues(eav);
 
         List<Planeta> scanResult = dynamoDBMapper.scan(Planeta.class, scanExpression);
-        return scanResult.stream().findFirst().orElseThrow(() -> new ResourceAccessException("O planeta - " + nome + " não foi encontrado!"));
+        return scanResult.stream().findFirst().orElse(null);
     }
 
     @Override
