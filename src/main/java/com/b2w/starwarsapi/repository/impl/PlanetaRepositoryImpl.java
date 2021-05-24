@@ -8,6 +8,7 @@ import com.amazonaws.services.dynamodbv2.model.Condition;
 import com.b2w.starwarsapi.domain.Planeta;
 import com.b2w.starwarsapi.repository.PlanetaRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.client.ResourceAccessException;
 
 import java.util.HashMap;
 import java.util.List;
@@ -35,7 +36,11 @@ public class PlanetaRepositoryImpl implements PlanetaRepository {
 
     @Override
     public Planeta buscarPorId(String planetaId) {
-        return dynamoDBMapper.load(Planeta.class, planetaId);
+        var planeta = dynamoDBMapper.load(Planeta.class, planetaId);
+        if(planeta == null) {
+            throw new ResourceAccessException("O planeta de id - " + planetaId + " não foi encontrado!");
+        }
+        return planeta;
     }
 
     @Override
@@ -46,7 +51,7 @@ public class PlanetaRepositoryImpl implements PlanetaRepository {
                 .withFilterExpression("nome = :nomeVal").withExpressionAttributeValues(eav);
 
         List<Planeta> scanResult = dynamoDBMapper.scan(Planeta.class, scanExpression);
-        return scanResult.stream().findFirst().orElse(null);
+        return scanResult.stream().findFirst().orElseThrow(() -> new ResourceAccessException("O planeta - " + nome + " não foi encontrado!"));
     }
 
     @Override
