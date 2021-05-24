@@ -2,8 +2,10 @@ package com.b2w.starwarsapi.endpoints;
 
 import com.b2w.starwarsapi.domain.Planeta;
 import com.b2w.starwarsapi.service.PlanetaService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -17,23 +19,23 @@ public class PlanetaEndpoint {
     }
 
     @PostMapping
-    public Planeta adicionar(@RequestBody Planeta planeta){
-        return planetaService.adicionar(planeta);
+    public ResponseEntity<Planeta> adicionar(@Valid @RequestBody Planeta planeta){
+        return ResponseEntity.ok(planetaService.adicionar(planeta));
     }
 
     @GetMapping("/id/{planetaId}")
-    public Planeta buscarPorId(@PathVariable String planetaId){
-        return planetaService.buscarPorId(planetaId);
+    public ResponseEntity<Planeta> buscarPorId(@PathVariable String planetaId){
+        return ResponseEntity.ok(planetaService.buscarPorId(planetaId));
     }
 
     @GetMapping("/nome/{nome}")
-    public Planeta buscarPorNome(@PathVariable String nome){
-        return planetaService.buscarPorNome(nome);
+    public ResponseEntity<Planeta> buscarPorNome(@PathVariable String nome){
+        return ResponseEntity.ok(planetaService.buscarPorNome(nome));
     }
 
     @GetMapping("/")
-    public List<Planeta> buscarTodos(){
-        return planetaService.buscarTodos();
+    public ResponseEntity<List<Planeta>> buscarTodos(){
+        return ResponseEntity.ok(planetaService.buscarTodos());
     }
 
     @DeleteMapping("/{planetaId}")
