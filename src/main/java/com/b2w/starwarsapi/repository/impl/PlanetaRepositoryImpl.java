@@ -1,14 +1,11 @@
 package com.b2w.starwarsapi.repository.impl;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
-import com.amazonaws.services.dynamodbv2.model.Condition;
 import com.b2w.starwarsapi.domain.Planeta;
 import com.b2w.starwarsapi.repository.PlanetaRepository;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.client.ResourceAccessException;
 
 import java.util.HashMap;
 import java.util.List;

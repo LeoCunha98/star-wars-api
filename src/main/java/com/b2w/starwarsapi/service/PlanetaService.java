@@ -8,9 +8,7 @@ import java.util.List;
 public interface PlanetaService {
     Planeta adicionar(Planeta planeta);
     Planeta buscarPorId(String planetaId);
-
     Planeta buscarPorNome(String nome);
-
     List<Planeta> buscarTodos();
     void deletar(String planetaId);
 
