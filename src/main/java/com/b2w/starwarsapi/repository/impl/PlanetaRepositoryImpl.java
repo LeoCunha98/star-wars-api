@@ -4,6 +4,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.b2w.starwarsapi.domain.Planeta;
+import com.b2w.starwarsapi.exception.ResourceNotFoundException;
 import com.b2w.starwarsapi.repository.PlanetaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -50,6 +51,10 @@ public class PlanetaRepositoryImpl implements PlanetaRepository {
     @Override
     public void deletar(String planetaId) {
         var planeta = dynamoDBMapper.load(Planeta.class, planetaId);
-        dynamoDBMapper.delete(planeta);
+        if(planeta != null) {
+            dynamoDBMapper.delete(planeta);
+        }  else {
+            throw new ResourceNotFoundException("O planeta de id - " + planetaId + " - não foi encontrado!");
+        }
     }
 }

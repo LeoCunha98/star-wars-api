@@ -114,7 +114,7 @@ class PlanetaServiceImplTest {
     }
 
     @Test
-    void buscarTodos() {
+    void testBuscarTodos() {
         when(objectMapper.convertValue(swapiFeign.getPlanets(), SwapiResponse.class)).thenReturn(swapiResponse);
         when(planetaRepository.listarTodos()).thenReturn(planetasExpected);
         assertThatCode(planetaService::buscarTodos).doesNotThrowAnyException();
@@ -122,7 +122,7 @@ class PlanetaServiceImplTest {
     }
 
     @Test
-    void deletar() {
+    void testDeletarSucesso() {
         planetaService.deletar(planetaExpected.getPlanetaId());
         verify(planetaRepository).deletar(planetaExpected.getPlanetaId());
     }
