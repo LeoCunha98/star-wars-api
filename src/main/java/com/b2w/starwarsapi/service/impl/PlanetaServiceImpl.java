@@ -18,16 +18,16 @@ import java.util.List;
 public class PlanetaServiceImpl implements PlanetaService {
 
     private final PlanetaRepository planetaRepository;
-    private final SwapiFeign swapiFeign;
-    private final ObjectMapper objectMapper = new ObjectMapper();
 
-    private static SwapiResponse swapiResponse;
+    private final SwapiFeign swapiFeign;
+
+    private final ObjectMapper objectMapper;
 
     public PlanetaServiceImpl(PlanetaRepository planetaRepository, SwapiFeign swapiFeign){
         this.planetaRepository = planetaRepository;
         this.swapiFeign = swapiFeign;
-        this.objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        this.swapiResponse = objectMapper.convertValue(swapiFeign.getPlanets(), SwapiResponse.class);
+        objectMapper = new ObjectMapper()
+                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
     @Override
@@ -36,6 +36,7 @@ public class PlanetaServiceImpl implements PlanetaService {
             throw new DuplicatedNameExcpetion("Já existe um planeta com o nome de - " + planeta.getNome() +
                     " - no Banco de Dados.");
         }
+        var swapiResponse = objectMapper.convertValue(swapiFeign.getPlanets(), SwapiResponse.class);
         PlanetasFeign planetaSwapi = isPlanetaSwapi(swapiResponse.getResults(), planeta.getNome());
         if(planetaSwapi != null)
                 planeta.setQtdAparicoes(planetaSwapi.getFilms().size());
@@ -45,6 +46,7 @@ public class PlanetaServiceImpl implements PlanetaService {
 
     @Override
     public Planeta buscarPorId(String planetaId) {
+        var swapiResponse = objectMapper.convertValue(swapiFeign.getPlanets(), SwapiResponse.class);
         var planeta = planetaRepository.buscarPorId(planetaId);
         if(planeta != null){
             PlanetasFeign planetaSwapi = isPlanetaSwapi(swapiResponse.getResults(), planeta.getNome());
@@ -59,6 +61,7 @@ public class PlanetaServiceImpl implements PlanetaService {
 
     @Override
     public Planeta buscarPorNome(String nome) {
+        var swapiResponse = objectMapper.convertValue(swapiFeign.getPlanets(), SwapiResponse.class);
         var planeta = planetaRepository.buscarPorNome(nome);
         if(planeta != null){
             PlanetasFeign planetaSwapi = isPlanetaSwapi(swapiResponse.getResults(), planeta.getNome());
@@ -72,6 +75,7 @@ public class PlanetaServiceImpl implements PlanetaService {
 
     @Override
     public List<Planeta> buscarTodos() {
+        var swapiResponse = objectMapper.convertValue(swapiFeign.getPlanets(), SwapiResponse.class);
         List<Planeta> planetas = planetaRepository.listarTodos();
 
         for (Planeta planeta : planetas) {

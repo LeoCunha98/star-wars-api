@@ -9,10 +9,6 @@ public class SwapiResponse {
     @JsonProperty("results")
     private List<PlanetasFeign> results;
 
-    public SwapiResponse(List<PlanetasFeign> results) {
-        this.results = results;
-    }
-
     public SwapiResponse(){}
 
     public List<PlanetasFeign> getResults() {
